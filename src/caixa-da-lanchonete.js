@@ -1,7 +1,7 @@
 import produtos from './produtos.json';
 
 const itensPossiveis = ["cafe", "chantily", "suco", "sanduiche", "queijo", "salgado", "combo1", "combo2"];
-const precos = ["3.00", "1.50", "6.20", "6.50", "2.0", "7.25", "9.50", "7.50"];
+const precos = ["3.00", "1.50", "6.20", "6.50", "2.00", "7.25", "9.50", "7.50"];
 const pagamentosPossiveis = ["dinheiro", "debito", "credito"];
 
 
@@ -18,8 +18,8 @@ class CaixaDaLanchonete {
 
     listaPedido(itens) {
         let numeroItens = itens.length;
-        pedido = [];
-        for (i = 0; i < numeroItens; i++) { 
+        let pedido = [];
+        for (let i = 0; i < numeroItens; i++) { 
             let itemAtual = itens[i].split(',');
             pedido.push(itemAtual);
         }
@@ -29,7 +29,7 @@ class CaixaDaLanchonete {
     quebraArray(itens) {
         let numeroItens = itens.length;
         let itemPorItem = [];
-        for (i = 0; i < numeroItens; i++) { 
+        for (let i = 0; i < numeroItens; i++) { 
             itemPorItem.push(itens[i][0]);
             itemPorItem.push(itens[i][1]);
         }
@@ -37,7 +37,7 @@ class CaixaDaLanchonete {
     }
 
     verificaExtras(itens) {
-        pedidoTemp = this.quebraArray(this.listaPedido(itens));
+        let pedidoTemp = this.quebraArray(this.listaPedido(itens));
         
         if ((pedidoTemp.includes("chantily") && !pedidoTemp.includes("cafe")) || 
         (pedidoTemp.includes("queijo") && !pedidoTemp.includes("sanduiche"))) {
@@ -49,7 +49,7 @@ class CaixaDaLanchonete {
 
     contaQuantidades(itemPorItem) {
         let quantidades = [];
-        for (i = 0; i < itemPorItem.length; i++) {
+        for (let i = 0; i < itemPorItem.length; i++) {
             if (i % 2 == 0) {
                 continue;
             } else {
@@ -61,7 +61,7 @@ class CaixaDaLanchonete {
 
     listaApenasItens(itemPorItem) {
         let itensPedido = [];
-        for (i = 0; i < itemPorItem.length; i++) {
+        for (let i = 0; i < itemPorItem.length; i++) {
             if (i % 2 == 0) {
                 itensPedido.push(itemPorItem[i]);
             } else {
@@ -69,6 +69,17 @@ class CaixaDaLanchonete {
             }
         }
         return itensPedido;
+    }
+
+    descobrirValor(itensPedido, quantidades) {
+        let total = 0;
+        for (let i = 0; i < itensPedido.length; i++) {
+            let itemAtual = itensPedido[i];
+            let indexItemAtual = itensPossiveis.indexOf(itemAtual);
+            let preco = parseFloat(precos[indexItemAtual]);
+            total += preco * parseInt(quantidades[i]);
+        }
+        return total;
     }
 
     analisaCodigo(itensPedido) {
@@ -103,26 +114,14 @@ class CaixaDaLanchonete {
             } else if (this.analisaCodigo(itensPedido)) {
                 return "Item inválido!";
             } else {
-                let total;
-                pedidos = this.listaPedido(itens);
-                itensPedido = [];
-                quantidades = [];
-    
-                for (i = 0; i < itensPedido; i++) {
-                    let itemAtual = itensPossiveis.indexOf(itensPedido[i]);
-                    total =+ parseFloat(precos[itemAtual]) * quantidades[i];
-    
-                }
-    
+                let total = this.descobrirValor(itensPedido, quantidades);
                 if (metodoDePagamento == "dinheiro") {
-                    total = total * 0.95;
+                    total = parseFloat((total * 0.95).toFixed(2));
                 } else if (metodoDePagamento == "credito") {
-                    total = total * 1.03;
+                    total = parseFloat((total * 1.03).toFixed(2));
                 }  
                 
-                let numeroItens = itens.length;
-                let pedidos = []; 
-                totalFormatado = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                let totalFormatado = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
                 return totalFormatado; 
     
             }
