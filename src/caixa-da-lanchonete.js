@@ -1,4 +1,3 @@
-import produtos from './produtos.json';
 
 const itensPossiveis = ["cafe", "chantily", "suco", "sanduiche", "queijo", "salgado", "combo1", "combo2"];
 const precos = ["3.00", "1.50", "6.20", "6.50", "2.00", "7.25", "9.50", "7.50"];
