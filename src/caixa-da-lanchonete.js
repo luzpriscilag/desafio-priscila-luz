@@ -5,15 +5,7 @@ const pagamentosPossiveis = ["dinheiro", "debito", "credito"];
 
 
 
-class CaixaDaLanchonete {
-    
-    analisaPagamento(metodoDePagamento) {
-        if (pagamentosPossiveis.includes(metodoDePagamento)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+class CaixaDaLanchonete { 
 
     listaPedido(itens) {
         let numeroItens = itens.length;
@@ -33,17 +25,6 @@ class CaixaDaLanchonete {
             itemPorItem.push(itens[i][1]);
         }
         return itemPorItem;
-    }
-
-    verificaExtras(itens) {
-        let pedidoTemp = this.quebraArray(this.listaPedido(itens));
-        
-        if ((pedidoTemp.includes("chantily") && !pedidoTemp.includes("cafe")) || 
-        (pedidoTemp.includes("queijo") && !pedidoTemp.includes("sanduiche"))) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     contaQuantidades(itemPorItem) {
@@ -70,15 +51,23 @@ class CaixaDaLanchonete {
         return itensPedido;
     }
 
-    descobrirValor(itensPedido, quantidades) {
-        let total = 0;
-        for (let i = 0; i < itensPedido.length; i++) {
-            let itemAtual = itensPedido[i];
-            let indexItemAtual = itensPossiveis.indexOf(itemAtual);
-            let preco = parseFloat(precos[indexItemAtual]);
-            total += preco * parseInt(quantidades[i]);
+    analisaPagamento(metodoDePagamento) {
+        if (pagamentosPossiveis.includes(metodoDePagamento)) {
+            return true;
+        } else {
+            return false;
         }
-        return total;
+    }
+
+    verificaExtras(itens) {
+        let pedidoTemp = this.quebraArray(this.listaPedido(itens));
+        
+        if ((pedidoTemp.includes("chantily") && !pedidoTemp.includes("cafe")) || 
+        (pedidoTemp.includes("queijo") && !pedidoTemp.includes("sanduiche"))) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     analisaCodigo(itensPedido) {
@@ -88,6 +77,17 @@ class CaixaDaLanchonete {
         } else {
             return true;
         }
+    }
+
+    descobrirValor(itensPedido, quantidades) {
+        let total = 0;
+        for (let i = 0; i < itensPedido.length; i++) {
+            let itemAtual = itensPedido[i];
+            let indexItemAtual = itensPossiveis.indexOf(itemAtual);
+            let preco = parseFloat(precos[indexItemAtual]);
+            total += preco * parseInt(quantidades[i]);
+        }
+        return total;
     }
 
 
